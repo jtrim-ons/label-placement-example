@@ -644,7 +644,8 @@ function createLegend(){
             element: textElement,
             height: textElement.node().getBBox().height - 4,
             targetY: y(rightmostDatum[column]),
-            x: x(rightmostDatum["date"])
+            x: x(rightmostDatum["date"]),
+            colour: dvc.essential.colour_palette[columnIndex]
           });
         }
 
@@ -657,6 +658,14 @@ function createLegend(){
         textElements.forEach(function(e) {
           e.datum.element
 				    .attr("transform", "translate(" + e.datum.x + "," + e.location + ")");
+          textElement = svg.append("line")
+            .attr("x1", e.datum.x)
+            .attr("y1", e.datum.targetY)
+            .attr("x2", e.datum.x + 10)
+            .attr("y2", e.location)
+            .style("stroke", e.datum.colour)
+            .style("stroke-width", 1)
+            .style("stroke-dasharray", "2 2");
         });
       }
 
@@ -667,7 +676,7 @@ function createLegend(){
             lineNumber = 0,
             lineHeight = 1.1, // ems
             y = text.attr("y") +5,
-            tspan = text.text(null).append("tspan").attr("x", 5).attr("y", y),
+            tspan = text.text(null).append("tspan").attr("x", 10).attr("y", y),
             tspans = [tspan];
         while (word = words.pop()) {
           line.push(word);
@@ -676,7 +685,7 @@ function createLegend(){
             line.pop();
             tspan.text(line.join(" "));
             line = [word];
-            tspan = text.append("tspan").attr("x", 5).attr("y", y).text(word);
+            tspan = text.append("tspan").attr("x", 10).attr("y", y).text(word);
             tspans.push(tspan);
           }
         }
